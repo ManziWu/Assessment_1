@@ -26,6 +26,9 @@ if "query_result" not in st.session_state:
 if "system_prompt" not in st.session_state:
     st.session_state.system_prompt = "You are an expert lawyer, who specialises in Australian contract law."
 
+if "file_deleted" not in st.session_state:
+    st.session_state.file_deleted = False
+
 if uploaded_file:
     # 检查并创建存储文件夹
     if not os.path.exists(document_folder):
@@ -76,9 +79,14 @@ if uploaded_file:
             st.write(current_chunk)
         else:
             st.error("Document could not be chunked.")
-else:
-    st.error("Please upload a document first.")      
 
+# 显示文件内容
+    document_text = read_document(document_folder, document_name)
+    st.write(document_text[:500])  # 显示前500个字符
+    
+    # 删除按钮
+    delete_document(document_folder, document_name)
+    
 # Step 2: 用户查询
 st.subheader("Step 2: Ask a Question")
 user_query = st.text_input("Enter your legal question:", key="user_query_input")  # 添加唯一的key
@@ -86,7 +94,7 @@ user_query = st.text_input("Enter your legal question:", key="user_query_input")
 if st.button("Submit Query"):
     if user_query:
         n_results = 5  # 可以根据需要调整返回的结果数量
-        uery_result = query_chromadb_collection("legal_docs_collection", user_query, n_results=n_results)  # 添加 n_results 参数
+        st.session_state.query_result = query_chromadb_collection("legal_docs_collection", user_query, n_results=n_results)  # 添加 n_results 参数
         
         if st.session_state.query_result:
             st.write("Relevant document chunks found:")
@@ -101,17 +109,18 @@ if st.button("Submit Query"):
 st.subheader("Step 3: Generating Answer")
 
 if st.session_state.query_result:
-    # 调试信息：打印传递给 GPT 的文档块和问题
+   
     st.write("Sending the following document chunks to GPT:")
-    for chunk in st.session_state.query_result:
-        st.write(chunk)  # 输出检索到的文档块
     
     st.write(f"User query: {user_query}")  # 输出用户的问题
-    
+
+    document_chunks_str = "\n".join(st.session_state.query_result) # 用换行符拼接文档块 # 调用 GPT 接口生成答案 
     # 调用 GPT 接口生成答案
-    generated_answer = gpt4o_mini_inference(user_query, st.session_state.query_result)
+    generated_answer = gpt4o_mini_inference(user_query, document_chunks_str)
     
     if generated_answer:
         st.write(f"Generated Answer: {generated_answer}")
     else:
         st.error("No answer generated. Check the GPT API connection and input.")
+
+
