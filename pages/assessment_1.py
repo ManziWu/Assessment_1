@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), 'utilities'))
 import streamlit as st
 from utilities.ai_embedding import text_small_embedding  
 from utilities.ai_inference import gpt4o_mini_inference  
@@ -9,9 +12,8 @@ from utilities.chroma_db import (
 )
 from utilities.documents import upload_document, read_document, chunk_document, delete_document
 from utilities.layout import page_config
-import os
-import sys
-sys.path.insert(0, "./")
+
+
 
 page_config()
 
