@@ -1,5 +1,5 @@
 import streamlit as st
-#from utilities.ai_embedding import text_small_embedding  
+from utilities.ai_embedding import text_small_embedding  
 from utilities.ai_inference import gpt4o_mini_inference  
 from utilities.chroma_db import (
     get_or_create_persistent_chromadb_client_and_collection,
@@ -10,11 +10,6 @@ from utilities.chroma_db import (
 from utilities.documents import upload_document, read_document, chunk_document, delete_document
 from utilities.layout import page_config
 import os
-
-import sys
-# 添加 utilities 文件夹路径
-sys.path.append(os.path.join(os.getcwd(), 'utilities'))
-from ai_embedding import text_small_embedding
 
 
 page_config()
