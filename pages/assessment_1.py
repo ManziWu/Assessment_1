@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), 'utilities'))
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'utilities'))
 import streamlit as st
 from utilities.ai_embedding import text_small_embedding  
 from utilities.ai_inference import gpt4o_mini_inference  
