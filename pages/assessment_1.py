@@ -10,7 +10,8 @@ from utilities.chroma_db import (
 from utilities.documents import upload_document, read_document, chunk_document, delete_document
 from utilities.layout import page_config
 import os
-
+import sys
+sys.path.insert(0, "./")
 
 page_config()
 
