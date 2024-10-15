@@ -4,9 +4,6 @@ from utilities.ai_inference import gpt4o_mini_inference, gpt4o_mini_inference_ye
 from utilities.chroma_db import get_or_create_persistent_chromadb_client_and_collection, add_document_chunk_to_chroma_collection, query_chromadb_collection, delete_chromadb_collection
 from utilities.documents import upload_document, read_document, chunk_document, download_document, delete_document
 from utilities.layout import page_config
-import sys
-sys.path.append('/mount/src/assessment_1/utilities')
-from ai_embedding import text_small_embedding
 
 
 if "system_prompt" not in st.session_state:
